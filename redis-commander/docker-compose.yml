@@ -1,0 +1,13 @@
+version: '3'
+services:
+  redis-commander:
+    container_name: redis-commander
+    hostname: redis-commander
+    image: rediscommander/redis-commander:latest
+    restart: always
+    environment:
+    - REDIS_HOST=tachikoma-ara-redis.db.line-apps-dev.com
+    - REDIS_PORT=7000
+    - REDIS_PASSWORD=Tachikoma2
+    ports:
+    - "8082:8081"

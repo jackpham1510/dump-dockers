@@ -1,0 +1,32 @@
+version: '3.5'
+services:
+  local-es:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.10.1
+    container_name: local-es
+    restart: always
+    environment:
+      ES_JAVA_OPTS: "-Xms512m -Xmx512m -Des.transport.cname_in_publish_address=true"
+    volumes:
+      - ./config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml:ro
+      - ./data:/usr/share/elasticsearch/data
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    networks:
+      - local-elastic-stack
+  local-kibana:
+    image: docker.elastic.co/kibana/kibana:7.10.1
+    container_name: local-kibana
+    restart: always
+    volumes: 
+      - ./config/kibana.yml:/usr/share/kibana/config/kibana.yml:ro
+    ports:
+      - "5601:5601"
+    networks: 
+      - local-elastic-stack
+    depends_on:
+      - local-es
+
+networks:
+  local-elastic-stack:
+    external: true
